@@ -1,28 +1,13 @@
-#include <GLFW/glfw3.h>
-#include "math.h"
 #include <iostream>
+#define GLEW_STATIC
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+#include "loadimage.h"
 
 using namespace std;
 
-//Init subdivision depth
-unsigned int DEPTH = 3;
 
-//Octagonal vertex coordinates
-GLfloat vertex[][3] = {
-  0.0f,  1.0f,  0.0f,
-  0.0f,  0.0f,  1.0f,
-  1.0f,  0.0f,  0.0f,
-  0.0f,  0.0f, -1.0f,
- -1.0f,  0.0f,  0.0f,
-  0.0f, -1.0f,  0.0f
-};
-//Declare keyboard method
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void divide_triangle(GLfloat* a, GLfloat* b, GLfloat* c, int depth, int face_number);
-void divide_triangle2(GLfloat* a, GLfloat* b, GLfloat* c, int depth, int face_number);
-void normalize(GLfloat* v);
-void triangle(GLfloat* va, GLfloat* vb, GLfloat* vc);
-void draw();
+
 int main(void)
 {
     GLFWwindow* window;
@@ -37,32 +22,236 @@ int main(void)
         return -1;
     }
 
-    glfwSetKeyCallback(window, key_callback);
+   
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    GLuint tex;
+    tex = loadimage("Sprite_Dice.bmp");
 
+    struct UV
+    {
+        float ux, uy, vx, vy;
+    };
+
+    // U == Upper Right Corner
+    // V == Lower Left Corner
+
+    // UV Mapping for Number 1 Dice Face
+    UV sprite_uvs_1[16] =
+    {
+        /*U                  V*/
+        {0.166667, 1.000000, 0.000000, 0.833333},
+        {0.166667, 0.833333, 0.000000, 0.666667},
+        {0.166667, 0.666667, 0.000000, 0.500000},
+        {0.166667, 0.500000, 0.000000, 0.333333},
+        {0.166667, 0.333333, 0.000000, 0.166667},
+        {0.166667, 0.166667, 0.000000, 0.000000},
+
+    };
+
+    UV sprite_uvs_2[16] =
+    {
+        /*U                  V*/
+        {0.333333, 1.000000, 0.166667, 0.833333},
+        {0.333333, 0.833333, 0.166667, 0.666667},
+        {0.333333, 0.666667, 0.166667, 0.500000},
+        {0.333333, 0.500000, 0.166667, 0.333333},
+        {0.333333, 0.333333, 0.166667, 0.166667},
+        {0.333333, 0.166667, 0.166667, 0.000000},
+
+    };
+
+    UV sprite_uvs_3[16] =
+    {
+        /*U                  V*/
+        {0.500000, 1.000000, 0.333333, 0.833333},
+        {0.500000, 0.833333, 0.333333, 0.666667},
+        {0.500000, 0.666667, 0.333333, 0.500000},
+        {0.500000, 0.500000, 0.333333, 0.333333},
+        {0.500000, 0.333333, 0.333333, 0.166667},
+        {0.500000, 0.166667, 0.333333, 0.000000},
+
+    };
+
+    UV sprite_uvs_4[16] =
+    {
+        /*U                  V*/
+        {0.666667, 1.000000, 0.500000, 0.833333},
+        {0.666667, 0.833333, 0.500000, 0.666667},
+        {0.666667, 0.666667, 0.500000, 0.500000},
+        {0.666667, 0.500000, 0.500000, 0.333333},
+        {0.666667, 0.333333, 0.500000, 0.166667},
+        {0.666667, 0.166667, 0.500000, 0.000000},
+
+    };
+
+    UV sprite_uvs_5[16] =
+    {
+        /*U                  V*/
+        {0.833333, 1.000000, 0.666667, 0.833333},
+        {0.833333, 0.833333, 0.666667, 0.666667},
+        {0.833333, 0.666667, 0.666667, 0.500000},
+        {0.833333, 0.500000, 0.666667, 0.333333},
+        {0.833333, 0.333333, 0.666667, 0.166667},
+        {0.833333, 0.166667, 0.666667, 0.000000},
+
+    };
+
+    UV sprite_uvs_6[16] =
+    {
+        /*U                  V*/
+        {1.000000, 1.000000, 0.833333, 0.833333},
+        {1.000000, 0.833333, 0.833333, 0.666667},
+        {1.000000, 0.666667, 0.833333, 0.500000},
+        {1.000000, 0.500000, 0.833333, 0.333333},
+        {1.000000, 0.333333, 0.833333, 0.166667},
+        {1.000000, 0.166667, 0.833333, 0.000000},
+
+    };
+    const int num_uvs = 6;
+    int frame = 0;
+    int anim_frame = 0;
+    const int anim_speed = 2500;
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
-    {
-        // Set the plane surrounded by the counterclockwise points as the front
-        glFrontFace(GL_CCW);
-        // Set not to draw the back side, saving computing power and preventing the back side from covering the front side
+    {      
+     
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+        glBindTexture(GL_TEXTURE_2D, tex);
+        
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_DEPTH_TEST);
+        
+        frame++;
+        if (frame % anim_speed == 0)
+        {
+            anim_frame = (anim_frame + 1) % num_uvs;
+        }
+        
+        UV uv1 = sprite_uvs_1[anim_frame];
+        UV uv2 = sprite_uvs_2[anim_frame];
+        UV uv3 = sprite_uvs_3[anim_frame];
+        UV uv4 = sprite_uvs_4[anim_frame];
+        UV uv5 = sprite_uvs_5[anim_frame];
+        UV uv6 = sprite_uvs_6[anim_frame];
+        
 
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+       // glRotatef(0.01f, 1.f, 1.f, 1.f);
+        glRotatef(0.01f, 1.f, 1.f, 1.f);
+        float r = 0.5f;
 
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        glBegin(GL_TRIANGLES);
 
-        glRotatef((float)glfwGetTime() * 5.0f, 1.0f, 1.0f, 0.0f);
+        // Back Face
+        glTexCoord2f(uv6.vx, uv6.vy);
+        glVertex3f(-r, -r, r);    
+        glTexCoord2f(uv6.vx, uv6.uy);
+        glVertex3f(-r, r, r);
+        glTexCoord2f(uv6.ux, uv6.uy);
+        glVertex3f(r, r, r);
 
-        draw();
+        glTexCoord2f(uv6.ux, uv6.uy);
+        glVertex3f(r, r, r);
+        glTexCoord2f(uv6.ux, uv6.vy);
+        glVertex3f(r, -r, r);
+        glTexCoord2f(uv6.vx, uv6.vy);
+        glVertex3f(-r, -r, r);
+        
+
+        // Near Face
+        glTexCoord2f(uv1.vx, uv1.vy);
+        glVertex3f(r, r, -r);
+        glTexCoord2f(uv1.vx, uv1.uy);
+        glVertex3f(-r, r, -r);
+        glTexCoord2f(uv1.ux, uv1.uy);
+        glVertex3f(-r, -r, -r);
+
+        glTexCoord2f(uv1.ux, uv1.uy);
+        glVertex3f(-r, -r, -r);
+        glTexCoord2f(uv1.ux, uv1.vy);
+        glVertex3f(r, -r, -r);
+        glTexCoord2f(uv1.vx, uv1.vy);
+        glVertex3f(r, r, -r);
+
+        
+
+        // Right Face
+        glTexCoord2f(uv3.ux, uv3.uy);
+        glVertex3f(r, r, -r);
+        glTexCoord2f(uv3.ux, uv3.vy);
+        glVertex3f(r, -r, -r);
+        glTexCoord2f(uv3.vx, uv3.vy);
+        glVertex3f(r, -r, r);
+
+        glTexCoord2f(uv3.vx, uv3.vy);
+        glVertex3f(r, -r, r);
+        glTexCoord2f(uv3.vx, uv3.uy);
+        glVertex3f(r, r, r);
+        glTexCoord2f(uv3.ux, uv3.uy);
+        glVertex3f(r, r, -r);
+
+        
+
+        //Left Face
+        glTexCoord2f(uv4.ux, uv4.uy);
+        glVertex3f(-r, -r, r);
+        glTexCoord2f(uv4.ux, uv4.vy);
+        glVertex3f(-r, -r, -r);
+        glTexCoord2f(uv4.vx, uv4.vy);
+        glVertex3f(-r, r, -r);
+        
+
+        glTexCoord2f(uv4.vx, uv4.vy);
+        glVertex3f(-r, r, -r);
+        glTexCoord2f(uv4.vx, uv4.uy);
+        glVertex3f(-r, r, r);
+        glTexCoord2f(uv4.ux, uv4.uy);
+        glVertex3f(-r, -r, r);
+        
+
+        
+        //Bottom Face
+        glTexCoord2f(uv2.ux, uv2.uy);
+        glVertex3f(r, r, -r);
+        glTexCoord2f(uv2.ux, uv2.vy);
+        glVertex3f(r, r, r);
+        glTexCoord2f(uv2.vx, uv2.vy);
+        glVertex3f(-r, r, r);
+
+        glTexCoord2f(uv2.vx, uv2.vy);
+        glVertex3f(-r, r, r);
+        glTexCoord2f(uv2.vx, uv2.uy);
+        glVertex3f(-r, r, -r);
+        glTexCoord2f(uv2.ux, uv2.uy);
+        glVertex3f(r, r, -r);
+
+        
+
+        //Top Face
+        glTexCoord2f(uv5.ux, uv5.uy);
+        glVertex3f(-r, -r, r);
+        glTexCoord2f(uv5.ux, uv5.vy);
+        glVertex3f(r, -r, r);
+        glTexCoord2f(uv5.vx, uv5.vy);
+        glVertex3f(r, -r, -r);
+
+        glTexCoord2f(uv5.vx, uv5.vy);
+        glVertex3f(r, -r, -r);
+        glTexCoord2f(uv5.vx, uv5.uy);
+        glVertex3f(-r, -r, -r);
+        glTexCoord2f(uv5.ux, uv5.uy);
+        glVertex3f(-r, -r, r);
+            
+
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -72,153 +261,4 @@ int main(void)
     }
     glfwTerminate();
     return 0;
-}
-
-//Key operation method  Change depth by up and down
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-    if (key == GLFW_KEY_UP && action == GLFW_PRESS)
-    {
-        DEPTH += 1;
-    }
-    if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
-    {
-        DEPTH -= 1;
-    }
-}
-
-/*Map the subdivided triangles to the unit sphere by normalization
-scale the distance from the vertex to the origin from the original distance to 1*/
-void normalize(GLfloat* v)
-{
-    GLfloat d = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-    v[0] /= d; v[1] /= d; v[2] /= d;
-}
-
-/*The way to divide the sides equally, the equilateral triangle is further subdivided into four equilateral triangles,
-Start to subdivide recursively, if the number of layers is not reached, the triangle is further subdivided, and if the depth drops to 0, the final small triangle is drawn*/
-
-void divide_triangle(GLfloat* a, GLfloat* b, GLfloat* c, int depth, int face_number)
-{
-    if (depth > 0) {
-        //Temporary points are used to store midpoints
-        GLfloat ab[3], bc[3], ac[3];
-
-        for (unsigned int i = 0; i < 3; i++)
-            ab[i] = (a[i] + b[i]) / 2;
-        normalize(ab);
-        for (unsigned int i = 0; i < 3; i++)
-            bc[i] = (b[i] + c[i]) / 2;
-        normalize(bc);
-        for (unsigned int i = 0; i < 3; i++)
-            ac[i] = (a[i] + c[i]) / 2;
-        normalize(ac);
-
-
-        divide_triangle(ac, ab, a, depth - 1, 1);
-
-        divide_triangle(bc, b, ab, depth - 1, 2);
-
-        divide_triangle(c, bc, ac, depth - 1, 3);
-
-        divide_triangle(ab, ac, bc, depth - 1, 4);
-    }
-    else {
-
-        if (face_number == 1)
-        {
-            glColor3f(1.0, 0.0, 0.0);
-            triangle(a, b, c);
-        }
-        else if (face_number == 2)
-        {
-            glColor3f(0.0, 0.0, 1.0);
-            triangle(a, b, c);
-        }
-        else if (face_number == 3)
-        {
-            glColor3f(0.0, 0.0, 0.0);
-            triangle(a, b, c);
-        }
-        else {
-
-            glColor3f(0.0, 1.0, 0.0);
-            triangle(a, b, c);
-        }
-
-    }
-}
-
-void divide_triangle2(GLfloat* a, GLfloat* b, GLfloat* c, int depth, int face_number)
-{
-    if (depth > 0) {
-        //Temporary points are used to store midpoints
-        GLfloat ab[3], bc[3], ac[3];
-
-        for (unsigned int i = 0; i < 3; i++)
-            ab[i] = (a[i] + b[i]) / 2;
-        normalize(ab);
-        for (unsigned int i = 0; i < 3; i++)
-            bc[i] = (b[i] + c[i]) / 2;
-        normalize(bc);
-        for (unsigned int i = 0; i < 3; i++)
-            ac[i] = (a[i] + c[i]) / 2;
-        normalize(ac);
-
-
-        divide_triangle2(ac, ab, a, depth - 1, 1);
-
-        divide_triangle2(bc, b, ab, depth - 1, 2);
-
-        divide_triangle2(c, bc, ac, depth - 1, 3);
-
-        divide_triangle2(ab, ac, bc, depth - 1, 4);
-    }
-    else {
-
-        if (face_number == 1)
-        {
-            glColor3f(0.9, 0.0, 0.9);
-            triangle(a, b, c);
-        }
-        else if (face_number == 2)
-        {
-            glColor3f(0.2, 0.5, 1.0);
-            triangle(a, b, c);
-        }
-        else if (face_number == 3)
-        {
-            glColor3f(0.5, 0.5, 0.5);
-            triangle(a, b, c);
-        }
-        else {
-
-            glColor3f(0.7, 0.1, 0.0);
-            triangle(a, b, c);
-        }
-
-    }
-}
-void triangle(GLfloat* va, GLfloat* vb, GLfloat* vc)
-{
-    glBegin(GL_TRIANGLES);
-    glVertex3fv(va);
-    glVertex3fv(vb);
-    glVertex3fv(vc);
-    glEnd();
-    glFlush();
-}
-void draw() {
-    divide_triangle(vertex[0], vertex[2], vertex[1], DEPTH, 1);
-    divide_triangle2(vertex[0], vertex[3], vertex[2], DEPTH, 2);
-    divide_triangle(vertex[0], vertex[4], vertex[3], DEPTH, 3);
-    divide_triangle2(vertex[0], vertex[1], vertex[4], DEPTH, 4);
-    divide_triangle(vertex[5], vertex[1], vertex[2], DEPTH, 5);
-    divide_triangle2(vertex[5], vertex[2], vertex[3], DEPTH, 6);
-    divide_triangle(vertex[5], vertex[3], vertex[4], DEPTH, 7);
-    divide_triangle2(vertex[5], vertex[4], vertex[1], DEPTH, 8);
 }

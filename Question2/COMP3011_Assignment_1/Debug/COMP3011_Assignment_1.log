@@ -1,7 +1,10 @@
 ﻿  main.cpp
-C:\Computer Science\Year 3\Graphics\Graphics_Assigment_1\Question2\COMP3011_Assignment_1\main.cpp(185,36): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Computer Science\Year 3\Graphics\Graphics_Assigment_1\Question2\COMP3011_Assignment_1\main.cpp(190,36): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Computer Science\Year 3\Graphics\Graphics_Assigment_1\Question2\COMP3011_Assignment_1\main.cpp(200,36): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-  LINK : C:\Computer Science\Year 3\Graphics\Graphics_Assigment_1\Question2\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe not found or not built by the last incremental link; performing full link
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  COMP3011_Assignment_1.vcxproj -> C:\Computer Science\Year 3\Graphics\Graphics_Assigment_1\Question2\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\loadimage.h(1,1): warning C4103: alignment changed after including header, may be due to missing #pragma pack(pop)
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(5,1): warning C4103: alignment changed after including header, may be due to missing #pragma pack(pop)
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(51,5): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(63,5): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(75,5): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(87,5): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(99,5): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\main.cpp(111,5): warning C4305: 'initializing': truncation from 'double' to 'float'
+  COMP3011_Assignment_1.vcxproj -> C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question2\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe
