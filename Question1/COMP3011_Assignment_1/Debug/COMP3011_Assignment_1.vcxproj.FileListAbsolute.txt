@@ -4,3 +4,5 @@ C:\Users\limka\OneDrive\Desktop\Graphics_Assigment_1\COMP3011_Assignment_1\Debug
 C:\Users\limka\OneDrive\Desktop\Graphics_Assigment_1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.pdb
 C:\Users\limka\OneDrive\Desktop\Graphics_Assigment_1\Question1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe
 C:\Users\limka\OneDrive\Desktop\Graphics_Assigment_1\Question1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.pdb
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.pdb

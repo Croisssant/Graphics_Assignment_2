@@ -1,2 +1,5 @@
 ﻿  main.cpp
-  COMP3011_Assignment_1.vcxproj -> C:\Users\limka\OneDrive\Desktop\Graphics_Assigment_1\Question1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question1\COMP3011_Assignment_1\main.cpp(75,24): warning C4244: 'argument': conversion from 'double' to 'GLsizei', possible loss of data
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question1\COMP3011_Assignment_1\main.cpp(157,41): warning C4244: 'argument': conversion from 'double' to 'GLsizei', possible loss of data
+C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question1\COMP3011_Assignment_1\main.cpp(157,18): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
+  COMP3011_Assignment_1.vcxproj -> C:\Computer Science\Year 3\Graphics\Graphics_Assignment_2\Question1\COMP3011_Assignment_1\Debug\COMP3011_Assignment_1.exe
