@@ -9,7 +9,7 @@
 #include <glm/gtx/string_cast.hpp> 
 
 GLFWwindow* window = NULL;
-const char* WINDOW_TITLE = "GRA_Tutorial";
+const char* WINDOW_TITLE = "Question 1";
 const GLint WINDOW_WIDTH = 1200;
 const GLint WINDOW_HEIGHT = 800;
 int change = 0;
